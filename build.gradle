@@ -4,6 +4,13 @@ plugins {
 	id 'java'
 }
 
+
+tasks.jar {
+	manifest {
+		attributes["B2b2cApplication"] = "'com.bancopichincha.b2b2c"
+	}
+}
+
 group = 'com.bancopichincha'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
