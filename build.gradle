@@ -5,17 +5,9 @@ plugins {
 }
 
 
-/*tasks.jar {
+tasks.jar {
 	manifest {
-		attributes["B2b2cApplication"] = "'com.bancopichincha.b2b2c"
-	}
-}*/
-
-jar {
-	manifest {
-		attributes(
-				'B2b2cApplication': 'com.bancopichincha.b2b2c'
-		)
+		attributes["B2b2cApplication"] = "com.bancopichincha.b2b2c"
 	}
 }
 
