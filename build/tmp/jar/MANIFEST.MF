@@ -1,2 +1,3 @@
 Manifest-Version: 1.0
+B2b2cApplication: 'com.bancopichincha.b2b2c
 
