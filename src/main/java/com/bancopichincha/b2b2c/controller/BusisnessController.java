@@ -21,8 +21,8 @@ public class BusisnessController {
         this.service = service;
     }
 
-    @GetMapping
-    public ResponseEntity<?> findAllPageable(@Valid PaginableDTO paginableDTO){
+    @PostMapping
+    public ResponseEntity<?> findAllPageable(@Valid @RequestBody PaginableDTO paginableDTO){
         return ResponseEntity.status(HttpStatus.FOUND).body(service.list(paginableDTO));
     }
 
