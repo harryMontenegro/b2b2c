@@ -21,17 +21,17 @@ public class BusisnessController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<?> findAllPageable(@Valid @RequestBody PaginableDTO paginableDTO){
+    @PostMapping("/findAll")
+    public ResponseEntity<?> findAllPageable(@RequestBody PaginableDTO paginableDTO){
         return ResponseEntity.status(HttpStatus.FOUND).body(service.list(paginableDTO));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findOneById(@PathVariable Integer id){
-        return ResponseEntity.status(HttpStatus.FOUND).body(service.findOneById(id));
+        return ResponseEntity.status(HttpStatus.FOUND).body(service.findOneById(id).orElse(null));
     }
 
-    @GetMapping("/unico/{ruc}")
+    @GetMapping("/unique/{ruc}")
     public ResponseEntity<?> findByUnique(@PathVariable String ruc)  {
         return ResponseEntity.status(HttpStatus.FOUND).body(service.findByUnique(ruc));
     }
@@ -46,7 +46,7 @@ public class BusisnessController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.update(BusisnessDto));
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();

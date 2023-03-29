@@ -57,7 +57,7 @@ public class BusisnessServiceImpl implements BusisnessService {
 
     @Override
     public Optional<BusisnessDto> findOneById(Integer id) {
-        return Optional.of(Optional.of(mapper.mappear().convertValue(repository.findById(id), BusisnessDto.class))).orElse(null);
+        return Optional.of(Optional.of(mapper.mappear().convertValue(repository.findById(id).orElse(new Busisness()), BusisnessDto.class))).orElse(null);
     }
 
     @Override
