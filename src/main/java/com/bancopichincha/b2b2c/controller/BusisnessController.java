@@ -24,17 +24,17 @@ public class BusisnessController {
 
     @PostMapping("/findAll")
     public ResponseEntity<?> findAllPageable(@RequestBody PaginableDTO paginableDTO){
-        return ResponseEntity.status(HttpStatus.FOUND).body(service.list(paginableDTO));
+        return ResponseEntity.status(HttpStatus.OK).body(service.list(paginableDTO));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findOneById(@PathVariable Integer id){
-        return ResponseEntity.status(HttpStatus.FOUND).body(service.findOneById(id).orElse(null));
+        return ResponseEntity.status(HttpStatus.OK).body(service.findOneById(id).orElse(null));
     }
 
     @GetMapping("/unique/{ruc}")
     public ResponseEntity<?> findByUnique(@PathVariable String ruc)  {
-        return ResponseEntity.status(HttpStatus.FOUND).body(service.findByUnique(ruc));
+        return ResponseEntity.status(HttpStatus.OK).body(service.findByUnique(ruc));
     }
 
     @PostMapping
