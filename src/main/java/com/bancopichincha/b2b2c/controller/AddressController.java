@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/address")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:80"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:80", "http://localhost"})
 public class AddressController {
 
     private final AddressService service;
