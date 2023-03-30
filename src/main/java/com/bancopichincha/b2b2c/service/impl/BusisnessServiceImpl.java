@@ -29,12 +29,12 @@ public class BusisnessServiceImpl implements BusisnessService {
     @Override
     public BusisnessDto create(BusisnessDto busisnessDto) {
 
-        BusisnessDto unique = mapper.mappear().convertValue(findByUnique(busisnessDto.getRuc()), BusisnessDto.class);
+        BusisnessDto unique = mapper.map().convertValue(findByUnique(busisnessDto.getRuc()), BusisnessDto.class);
 
         if(unique != null){
             busisnessDto.setBusisness_id(unique.getBusisness_id());
         }
-        return mapper.mappear().convertValue(repository.save(mapper.mappear().convertValue(busisnessDto, Busisness.class)), BusisnessDto.class);
+        return mapper.map().convertValue(repository.save(mapper.map().convertValue(busisnessDto, Busisness.class)), BusisnessDto.class);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BusisnessServiceImpl implements BusisnessService {
         return Optional.of(repository.findAll(PageRequest.of(pageable.getPagina(), pageable.getCantidad())))
                 .get()
                 .get()
-                .map(c -> mapper.mappear().convertValue(c, BusisnessDto.class)).collect(Collectors.toList());
+                .map(c -> mapper.map().convertValue(c, BusisnessDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -57,11 +57,11 @@ public class BusisnessServiceImpl implements BusisnessService {
 
     @Override
     public Optional<BusisnessDto> findOneById(Integer id) {
-        return Optional.of(Optional.of(mapper.mappear().convertValue(repository.findById(id).orElse(new Busisness()), BusisnessDto.class))).orElse(null);
+        return Optional.of(Optional.of(mapper.map().convertValue(repository.findById(id).orElse(new Busisness()), BusisnessDto.class))).orElse(null);
     }
 
     @Override
     public BusisnessDto findByUnique(String ruc) {
-        return mapper.mappear().convertValue(repository.findByRuc(ruc), BusisnessDto.class);
+        return mapper.map().convertValue(repository.findByRuc(ruc), BusisnessDto.class);
     }
 }
