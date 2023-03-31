@@ -15,4 +15,8 @@ public class BusisnessClient {
     private Integer busisness_client_id ;
     private Integer busisness_id;
     private Integer client_id;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id", referencedColumnName = "client_id", insertable = false, updatable = false)
+    private Client client;
 }

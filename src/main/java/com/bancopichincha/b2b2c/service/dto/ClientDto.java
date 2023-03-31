@@ -1,5 +1,6 @@
 package com.bancopichincha.b2b2c.service.dto;
 
+import com.bancopichincha.b2b2c.domain.Address;
 import com.bancopichincha.b2b2c.domain.enums.CivilStatus;
 import com.bancopichincha.b2b2c.domain.enums.DocumentType;
 import com.bancopichincha.b2b2c.domain.enums.Gender;
@@ -20,4 +21,6 @@ public class ClientDto {
     private CivilStatus civilStatus;
     private Gender gender;
     private LocalDate birthdate;
+
+    private Address address;
 }

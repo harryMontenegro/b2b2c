@@ -1,42 +1,23 @@
-CREATE DATABASE "b2b2c"
-    WITH
-    OWNER = postgres
-    ENCODING = 'UTF8'
-    CONNECTION LIMIT = -1
-    IS_TEMPLATE = False;
-
-
--- SCHEMA: b2b2c
--- DROP SCHEMA IF EXISTS b2b2c ;
-
-CREATE SCHEMA IF NOT EXISTS b2b2c
-    AUTHORIZATION postgres;
-
-
--- Table: b2b2c.busisness
-
--- DROP TABLE IF EXISTS b2b2c.busisness;
-
+DROP SEQUENCE if exists b2b2c.busisness_seq;
+CREATE SEQUENCE b2b2c.busisness_seq;
+DROP TABLE IF EXISTS b2b2c.busisness;
 CREATE TABLE IF NOT EXISTS b2b2c.busisness
 (
-    id integer NOT NULL DEFAULT nextval('b2b2c.busisness_busisness_id_seq'::regclass),
+    busisness_id integer NOT NULL DEFAULT nextval('b2b2c.busisness_seq'),
     name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     ruc character varying(20) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT busisness_pkey PRIMARY KEY (id),
+    CONSTRAINT busisness_pkey PRIMARY KEY (busisness_id),
     CONSTRAINT "UK_Ruc" UNIQUE (ruc)
-    )
+    );
 
-    TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS b2b2c.busisness
-    OWNER to postgres;
-
-ALTER TABLE IF EXISTS b2b2c.socialnetwork_busisness
-    OWNER to postgres;
-
-
+-- SQLINES DEMO *** ------------------------------------
+-- SQLINES DEMO *** ient`
+-- SQLINES DEMO *** ------------------------------------
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+DROP SEQUENCE if exists b2b2c.client_seq;
 CREATE SEQUENCE b2b2c.client_seq;
 
+DROP TABLE IF EXISTS b2b2c.client;
 CREATE TABLE IF NOT EXISTS b2b2c.client (
     client_id INT NOT NULL DEFAULT NEXTVAL ('b2b2c.client_seq'),
     name VARCHAR(150) NOT NULL,
@@ -49,6 +30,8 @@ CREATE TABLE IF NOT EXISTS b2b2c.client (
     PRIMARY KEY (client_id),
     CONSTRAINT "UK_document_type_dni" UNIQUE (document_type, dni));
 
+DROP SEQUENCE if exists b2b2c.socialnetwork_busisness_seq;
+CREATE SEQUENCE b2b2c.socialnetwork_busisness_seq;
 DROP TABLE IF EXISTS b2b2c.socialnetwork_busisness;
 CREATE TABLE IF NOT EXISTS b2b2c.socialnetwork_busisness (
     socialnetwork_busisness_id INT NOT NULL DEFAULT NEXTVAL ('b2b2c.socialnetwork_busisness_seq'),
@@ -68,8 +51,10 @@ CREATE TABLE IF NOT EXISTS b2b2c.socialnetwork_busisness (
 -- SQLINES DEMO *** dress`
 -- SQLINES DEMO *** ------------------------------------
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
+DROP SEQUENCE if exists b2b2c.address_seq;
 CREATE SEQUENCE b2b2c.address_seq;
 
+DROP TABLE IF EXISTS b2b2c.address;
 CREATE TABLE IF NOT EXISTS b2b2c.address (
     address_id INT NOT NULL DEFAULT NEXTVAL ('b2b2c.address_seq'),
     addres VARCHAR(45) NOT NULL,
@@ -89,8 +74,10 @@ CREATE TABLE IF NOT EXISTS b2b2c.address (
 -- SQLINES DEMO *** sisness_client`
 -- SQLINES DEMO *** ------------------------------------
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
+DROP SEQUENCE if exists b2b2c.busisness_client_seq;
 CREATE SEQUENCE b2b2c.busisness_client_seq;
 
+DROP TABLE IF EXISTS b2b2c.busisness_client;
 CREATE TABLE IF NOT EXISTS b2b2c.busisness_client (
     busisness_client_id INT NOT NULL DEFAULT NEXTVAL ('b2b2c.busisness_client_seq'),
     busisness_id INT NOT NULL,
@@ -107,5 +94,3 @@ CREATE TABLE IF NOT EXISTS b2b2c.busisness_client (
     REFERENCES b2b2c.client (client_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);-- Este en Pgadmin
-
-

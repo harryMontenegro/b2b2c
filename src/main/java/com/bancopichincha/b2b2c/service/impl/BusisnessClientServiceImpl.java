@@ -64,4 +64,9 @@ public class BusisnessClientServiceImpl implements BusisnessClientService {
     public BusisnessClientDto findByUnique(Integer busisness_id, Integer client_id) {
         return mapper.map().convertValue(repository.findByUnique(busisness_id, client_id), BusisnessClientDto.class);
     }
+
+    @Override
+    public List<BusisnessClientDto> findByBusisness(Integer busisness_id) {
+        return List.of(mapper.map().convertValue(repository.findByBusisness(busisness_id), BusisnessClientDto[].class));
+    }
 }
