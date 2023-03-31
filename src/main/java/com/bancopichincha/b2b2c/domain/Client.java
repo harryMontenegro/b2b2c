@@ -26,4 +26,8 @@ public class Client {
     private CivilStatus civilStatus;
     private Gender gender;
     private LocalDate birthdate;
+
+    @OneToOne
+    @JoinColumn(name = "client_id", referencedColumnName = "client_id")
+    private Address address;
 }

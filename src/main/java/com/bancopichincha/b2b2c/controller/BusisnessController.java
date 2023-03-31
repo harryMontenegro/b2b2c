@@ -24,9 +24,13 @@ public class BusisnessController {
 
     @PostMapping("/findAll")
     public ResponseEntity<?> findAllPageable(@RequestBody PaginableDTO paginableDTO){
-        return ResponseEntity.status(HttpStatus.OK).body(service.list(paginableDTO));
+        return ResponseEntity.status(HttpStatus.OK).body(service.findAllSingle(paginableDTO));
     }
 
+    @PostMapping("/fullFindAll")
+    public ResponseEntity<?> findAllSinglePageable(@RequestBody PaginableDTO paginableDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(service.list(paginableDTO));
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> findOneById(@PathVariable Integer id){
         return ResponseEntity.status(HttpStatus.OK).body(service.findOneById(id).orElse(null));
@@ -51,5 +55,10 @@ public class BusisnessController {
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> findOneByName(@PathVariable String name){
+        return ResponseEntity.status(HttpStatus.OK).body(service.findByName(name));
     }
 }

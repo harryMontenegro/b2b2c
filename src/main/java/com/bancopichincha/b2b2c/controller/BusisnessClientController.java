@@ -52,4 +52,9 @@ public class BusisnessClientController {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @GetMapping("/busisness/{busisness_id}")
+    public ResponseEntity<?> findByBusisness(@PathVariable Integer busisness_id)  {
+        return ResponseEntity.status(HttpStatus.OK).body(service.findByBusisness(busisness_id));
+    }
 }

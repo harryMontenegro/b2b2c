@@ -4,6 +4,7 @@ import com.bancopichincha.b2b2c.domain.Busisness;
 import com.bancopichincha.b2b2c.repository.BusisnessRepository;
 import com.bancopichincha.b2b2c.service.BusisnessService;
 import com.bancopichincha.b2b2c.service.dto.BusisnessDto;
+import com.bancopichincha.b2b2c.service.dto.BusisnessSingleDto;
 import com.bancopichincha.b2b2c.service.dto.PaginableDTO;
 import com.bancopichincha.b2b2c.service.mapper.MapperObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +64,18 @@ public class BusisnessServiceImpl implements BusisnessService {
     @Override
     public BusisnessDto findByUnique(String ruc) {
         return mapper.map().convertValue(repository.findByRuc(ruc), BusisnessDto.class);
+    }
+
+    @Override
+    public List<BusisnessSingleDto> findAllSingle(PaginableDTO pageable) {
+        return Optional.of(repository.findAll(PageRequest.of(pageable.getPagina(), pageable.getCantidad())))
+                .get()
+                .get()
+                .map(c -> mapper.map().convertValue(c, BusisnessSingleDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public BusisnessSingleDto findByName(String name) {
+        return mapper.map().convertValue(repository.findByName(name).orElse(null), BusisnessSingleDto.class);
     }
 }

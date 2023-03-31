@@ -7,8 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+
 @Repository
 public interface BusisnessRepository extends JpaRepository<Busisness, Integer> {
     @Query("SELECT t FROM Busisness t WHERE t.ruc = ?1")
     Busisness findByRuc(String ruc);
+    @Query("SELECT t FROM Busisness t WHERE t.name = ?1")
+    Optional<Busisness> findByName(String name);
+
 }
