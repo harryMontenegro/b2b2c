@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/v1/busisnessClient")
@@ -55,6 +57,8 @@ public class BusisnessClientController {
 
     @GetMapping("/busisness/{busisness_id}")
     public ResponseEntity<?> findByBusisness(@PathVariable Integer busisness_id)  {
-        return ResponseEntity.status(HttpStatus.OK).body(service.findByBusisness(busisness_id));
+        return ResponseEntity.status(HttpStatus.OK).body(service.findByBusisness(busisness_id)
+                .stream()
+                .flatMap(client -> Stream.of(client.getClient())).collect(Collectors.toList()));
     }
 }
