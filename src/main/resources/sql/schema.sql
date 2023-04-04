@@ -94,3 +94,23 @@ CREATE TABLE IF NOT EXISTS b2b2c.busisness_client (
     REFERENCES b2b2c.client (client_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);-- Este en Pgadmin
+
+DROP SEQUENCE if exists b2b2c.transactionsbusisnessclient_seq;
+CREATE SEQUENCE b2b2c.transactionsbusisnessclient_seq;
+DROP TABLE IF EXISTS b2b2c.transactionsbusisnessclient;
+CREATE TABLE IF NOT EXISTS b2b2c.transactionsbusisnessclient (
+    transactionsbusisnessclient_id INT NOT NULL DEFAULT NEXTVAL ('b2b2c.transactionsbusisnessclient_seq'),
+    client_id INT NOT NULL,
+    busisness_id INT NOT NULL,
+    transactionDate DATE not NULL,
+    PRIMARY KEY (transactionsbusisnessclient_id),
+    CONSTRAINT fk_transactionsbusisnessclient_client_busisness1
+    FOREIGN KEY (busisness_id)
+    REFERENCES b2b2c.busisness (busisness_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT fk_transactionsbusisnessclient_client1
+    FOREIGN KEY (client_id)
+    REFERENCES b2b2c.client (client_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
