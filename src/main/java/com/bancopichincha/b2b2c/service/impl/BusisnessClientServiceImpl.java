@@ -1,9 +1,11 @@
 package com.bancopichincha.b2b2c.service.impl;
 
 import com.bancopichincha.b2b2c.domain.BusisnessClient;
+import com.bancopichincha.b2b2c.domain.enums.Gender;
 import com.bancopichincha.b2b2c.repository.BusisnessClientRepository;
 import com.bancopichincha.b2b2c.service.BusisnessClientService;
 import com.bancopichincha.b2b2c.service.dto.BusisnessClientDto;
+import com.bancopichincha.b2b2c.service.dto.ClientCoordinatesGenderDto;
 import com.bancopichincha.b2b2c.service.dto.PaginableDTO;
 import com.bancopichincha.b2b2c.service.mapper.MapperObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class BusisnessClientServiceImpl implements BusisnessClientService {
@@ -68,5 +72,23 @@ public class BusisnessClientServiceImpl implements BusisnessClientService {
     @Override
     public List<BusisnessClientDto> findByBusisness(Integer busisness_id) {
         return List.of(mapper.map().convertValue(repository.findByBusisness(busisness_id), BusisnessClientDto[].class));
+    }
+
+    @Override
+    public List<ClientCoordinatesGenderDto> findByBusisnessClientCordinates(Integer busisness_id) {
+
+        AtomicReference<Gender> gender = new AtomicReference<>();
+
+        return Stream.of(mapper.map().convertValue(repository.findByBusisness(busisness_id), BusisnessClientDto[].class))
+                .flatMap(busisnessClientDto -> Stream.of(busisnessClientDto.getClient()))
+                .peek(clientDto -> gender.set(clientDto.getGender()))
+                .flatMap(clientDto -> Stream.of(clientDto.getAddress()))
+                .map(address -> {
+                    ClientCoordinatesGenderDto clientCoordinates = new ClientCoordinatesGenderDto();
+                    clientCoordinates.setGender(gender.get());
+                    clientCoordinates.setLatitude(address.getLatitude());
+                    clientCoordinates.setLongitude(address.getLongitude());
+                    return clientCoordinates;
+                }).collect(Collectors.toList());
     }
 }

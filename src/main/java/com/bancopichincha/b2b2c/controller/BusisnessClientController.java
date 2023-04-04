@@ -9,10 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/v1/busisnessClient")
@@ -59,16 +55,6 @@ public class BusisnessClientController {
 
     @GetMapping("/busisness/{busisness_id}")
     public ResponseEntity<?> findByBusisness(@PathVariable Integer busisness_id)  {
-        return ResponseEntity.status(HttpStatus.OK).body(service.findByBusisness(busisness_id)
-                .stream()
-                .flatMap(busisnessClientDto -> Stream.of(busisnessClientDto.getClient()))
-                .flatMap(clientDto -> Stream.of(clientDto.getAddress()))
-                .map(address -> {
-                    HashMap<String, String> mapAdd = new HashMap<>();
-                    mapAdd.put("latitude", address.getLatitude());
-                    mapAdd.put("longitude", address.getLongitude());
-                    return mapAdd;
-                })
-                .collect(Collectors.toList()));
+        return ResponseEntity.status(HttpStatus.OK).body(service.findByBusisnessClientCordinates(busisness_id));
     }
 }

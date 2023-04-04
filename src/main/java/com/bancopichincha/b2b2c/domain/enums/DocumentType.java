@@ -1,8 +1,7 @@
 package com.bancopichincha.b2b2c.domain.enums;
 
 public enum DocumentType {
-    CC,
-    TI,
-    PASS,
-    RUC
+    CC,//CI
+    PASS,//Pasaporte
+    RUC//Juridicas
 }
