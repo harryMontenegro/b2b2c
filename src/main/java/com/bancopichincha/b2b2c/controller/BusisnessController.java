@@ -2,6 +2,7 @@ package com.bancopichincha.b2b2c.controller;
 
 import com.bancopichincha.b2b2c.service.BusisnessService;
 import com.bancopichincha.b2b2c.service.dto.BusisnessDto;
+import com.bancopichincha.b2b2c.service.dto.BusisnessSingleDto;
 import com.bancopichincha.b2b2c.service.dto.PaginableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,7 @@ public class BusisnessController {
 
     @GetMapping("/name/{name}")
     public ResponseEntity<?> findOneByName(@PathVariable String name){
-        return ResponseEntity.status(HttpStatus.OK).body(service.findByName(name));
+        BusisnessSingleDto data = service.findByName(name);
+        return data == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(null) : ResponseEntity.status(HttpStatus.OK).body(data);
     }
 }
