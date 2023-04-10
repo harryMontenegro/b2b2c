@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class TransactionsBusisnessClientServiceImpl implements TransactionsBusisnessClientService {
@@ -56,9 +54,10 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
     }
 
     @Override
-    public Map<Integer, Map<String, Long>> graphTransactions(Integer busisness_id) {
+    public List<Map.Entry<Integer, Map<String, Long>>> graphTransactions(Integer busisness_id) {
 
         Map<Integer, Map<String, Long>> response = new HashMap<>();
+        List<Map<Integer, Map<String, Long>>> response2= new ArrayList<>();
 
         List<TransactionsBusisnessClientDto> dataSource = findByBusisness(busisness_id);
 
@@ -83,7 +82,7 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
                     }
                 });
 
-        return response;
+        return new ArrayList<>(response.entrySet());
     }
 
     @Override
