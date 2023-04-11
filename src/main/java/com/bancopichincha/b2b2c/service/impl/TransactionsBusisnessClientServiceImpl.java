@@ -4,12 +4,14 @@ import com.bancopichincha.b2b2c.domain.TransactionsBusisnessClient;
 import com.bancopichincha.b2b2c.repository.TransactionsBusisnessClientRepository;
 import com.bancopichincha.b2b2c.service.TransactionsBusisnessClientService;
 import com.bancopichincha.b2b2c.service.dto.PaginableDTO;
+import com.bancopichincha.b2b2c.service.dto.ResultTransaction;
 import com.bancopichincha.b2b2c.service.dto.TransactionsBusisnessClientDto;
 import com.bancopichincha.b2b2c.service.mapper.MapperObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,35 +56,47 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
     }
 
     @Override
-    public List<Map.Entry<Integer, Map<String, Long>>> graphTransactions(Integer busisness_id) {
+    public List<ResultTransaction> graphTransactions(Integer busisness_id) {
 
-        Map<Integer, Map<String, Long>> response = new HashMap<>();
-        List<Map<Integer, Map<String, Long>>> response2= new ArrayList<>();
+        List<ResultTransaction> response = new ArrayList<>();
 
         List<TransactionsBusisnessClientDto> dataSource = findByBusisness(busisness_id);
 
-        dataSource.forEach(transaction -> {
-                    Long count = dataSource
-                            .stream()
-                            .filter(t -> t.getTransactionDate().getMonth().equals(transaction.getTransactionDate().getMonth())
-                                    && t.getTransactionDate().getYear() == transaction.getTransactionDate().getYear()).count();
+        List<String> anios = dataSource
+                .stream()
+                .map(trans -> String.valueOf(trans.getTransactionDate().getYear()))
+                .distinct()
+                .collect(Collectors.toList());
 
-                    if (!response.containsKey(transaction.getTransactionDate().getYear())) {
-                        Map<String, Long> month = new HashMap<>();
-                        month.put(transaction.getTransactionDate().getMonth().toString(), count);
-                        response.put(transaction.getTransactionDate().getYear(), month);
+        anios.forEach(anio -> {
 
-                    } else {
+            ResultTransaction itemResponse = new ResultTransaction();
+            itemResponse.setYear(anio);
 
-                        if (!response.get(transaction.getTransactionDate().getYear()).containsKey(transaction.getTransactionDate().getMonth().toString())) {
-                            Map<String, Long> existentYear = new HashMap<>(response.get(transaction.getTransactionDate().getYear()));
-                            existentYear.put(transaction.getTransactionDate().getMonth().toString(), count);
-                            response.put(transaction.getTransactionDate().getYear(), existentYear);
-                        }
-                    }
-                });
+            List<TransactionsBusisnessClientDto> monthList = dataSource
+                    .stream()
+                    .filter(trans -> String.valueOf(trans.getTransactionDate().getYear()).equals(anio))
+                    .collect(Collectors.toList());
 
-        return new ArrayList<>(response.entrySet());
+            List<Month> month = monthList
+                    .stream()
+                    .map(trans -> trans.getTransactionDate().getMonth())
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            month.forEach(mo -> {
+
+                if(itemResponse.getData().stream().noneMatch(data -> data.containsKey(mo.toString()))){
+                    Long count = monthList.stream().filter(ml -> ml.getTransactionDate().getMonth().equals(mo)).count();
+                    Map<String, Long> mapData = new HashMap<>();
+                    mapData.put(mo.toString(), count);
+                    itemResponse.getData().add(mapData);
+                }
+            });
+            response.add(itemResponse);
+        });
+
+        return response;
     }
 
     @Override
