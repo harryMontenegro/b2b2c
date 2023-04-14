@@ -1,6 +1,7 @@
 package com.bancopichincha.b2b2c.controller;
 
 
+import com.bancopichincha.b2b2c.domain.enums.Gender;
 import com.bancopichincha.b2b2c.service.IBusisnessClientPoliticalDivision;
 import com.bancopichincha.b2b2c.service.TransactionsBusisnessClientService;
 import com.bancopichincha.b2b2c.service.dto.PaginableDTO;
@@ -54,9 +55,9 @@ public class TransactionBusisnessClientController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/busisness/graphic/{busisness_id}")
-    public ResponseEntity<?> graphicTransaction(@PathVariable Integer busisness_id){
-        return ResponseEntity.status(HttpStatus.OK).body(service.graphTransactions(busisness_id));
+    @GetMapping({"/busisness/graphic/{busisness_id}", "/busisness/graphic/gender/filter/{gender}/{busisness_id}"})
+    public ResponseEntity<?> graphicTransaction(@PathVariable Integer busisness_id, @PathVariable(required = false) Gender gender){
+        return ResponseEntity.status(HttpStatus.OK).body(service.graphTransactions(busisness_id, gender));
     }
 
     @GetMapping("/politicalDivision/busisness/graphic/{busisness_id}")
@@ -64,4 +65,10 @@ public class TransactionBusisnessClientController {
         List<PoliticalDivisionDto> data = servicePoliticalDivision.calculatedClientByPoliticalDivision(busisness_id);
         return data.size() > 0 ? ResponseEntity.status(HttpStatus.OK).body(data) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(data);
     }
+
+/*    @GetMapping("/busisness/graphic/gender/filter/{gender}/{busisness_id}")
+    public ResponseEntity<?> genderGraphicTransaction(@PathVariable Gender gender, @PathVariable Integer busisness_id){
+        List<PoliticalDivisionDto> data = servicePoliticalDivision.calculatedClientByPoliticalDivision(gender);
+        return data.size() > 0 ? ResponseEntity.status(HttpStatus.OK).body(data) : ResponseEntity.status(HttpStatus.NOT_FOUND).body(data);
+    }*/
 }
