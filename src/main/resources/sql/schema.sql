@@ -114,3 +114,7 @@ CREATE TABLE IF NOT EXISTS b2b2c.transactionsbusisnessclient (
     REFERENCES b2b2c.client (client_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+ALTER TABLE b2b2c.address
+    ADD COLUMN city VARCHAR(45) NULL;
+
