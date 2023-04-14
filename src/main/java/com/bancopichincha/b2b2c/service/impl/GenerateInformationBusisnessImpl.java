@@ -2,8 +2,6 @@ package com.bancopichincha.b2b2c.service.impl;
 
 import static com.bancopichincha.b2b2c.domain.enums.DocumentType.*;
 
-import static com.bancopichincha.b2b2c.domain.enums.CivilStatus.*;
-import com.bancopichincha.b2b2c.domain.enums.Gender;
 import com.bancopichincha.b2b2c.service.BusisnessClientService;
 import com.bancopichincha.b2b2c.service.IGenerateDataBasicClientPorcent;
 import com.bancopichincha.b2b2c.service.IGenerateInformationBusisness;
