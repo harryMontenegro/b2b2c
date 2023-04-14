@@ -1,6 +1,7 @@
 package com.bancopichincha.b2b2c.service.impl;
 
 import com.bancopichincha.b2b2c.domain.TransactionsBusisnessClient;
+import com.bancopichincha.b2b2c.domain.enums.Gender;
 import com.bancopichincha.b2b2c.repository.TransactionsBusisnessClientRepository;
 import com.bancopichincha.b2b2c.service.TransactionsBusisnessClientService;
 import com.bancopichincha.b2b2c.service.dto.PaginableDTO;
@@ -56,7 +57,7 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
     }
 
     @Override
-    public List<ResultTransaction> graphTransactions(Integer busisness_id) {
+    public List<ResultTransaction> graphTransactions(Integer busisness_id, Gender gender) {
 
         List<ResultTransaction> response = new ArrayList<>();
 
@@ -73,10 +74,19 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
             ResultTransaction itemResponse = new ResultTransaction();
             itemResponse.setYear(anio);
 
-            List<TransactionsBusisnessClientDto> monthList = dataSource
-                    .stream()
-                    .filter(trans -> String.valueOf(trans.getTransactionDate().getYear()).equals(anio))
-                    .collect(Collectors.toList());
+            List<TransactionsBusisnessClientDto> monthList = new ArrayList<>();
+            if (gender == null) {
+                monthList = dataSource
+                        .stream()
+                        .filter(trans -> String.valueOf(trans.getTransactionDate().getYear()).equals(anio))
+                        .collect(Collectors.toList());
+            } else {
+                monthList = dataSource
+                        .stream()
+                        .filter(trans -> trans.getClient().stream().anyMatch(client -> client.getGender().equals(gender)))
+                        .filter(trans -> String.valueOf(trans.getTransactionDate().getYear()).equals(anio))
+                        .collect(Collectors.toList());
+            }
 
             List<Month> month = monthList
                     .stream()
@@ -84,10 +94,11 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
                     .distinct()
                     .collect(Collectors.toList());
 
+            List<TransactionsBusisnessClientDto> finalMonthList = monthList;
             month.forEach(mo -> {
 
-                if(itemResponse.getData().stream().noneMatch(data -> data.containsKey(mo.toString()))){
-                    Long count = monthList.stream().filter(ml -> ml.getTransactionDate().getMonth().equals(mo)).count();
+                if (itemResponse.getData().stream().noneMatch(data -> data.containsKey(mo.toString()))) {
+                    Long count = finalMonthList.stream().filter(ml -> ml.getTransactionDate().getMonth().equals(mo)).count();
                     Map<String, Long> mapData = new HashMap<>();
                     mapData.put(mo.toString(), count);
                     itemResponse.getData().add(mapData);
