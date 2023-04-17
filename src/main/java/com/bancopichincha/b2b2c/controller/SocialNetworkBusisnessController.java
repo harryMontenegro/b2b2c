@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/socialNetworkBusisness")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:80", "http://localhost"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:80", "http://localhost", "http://18.191.165.97/"})
 public class SocialNetworkBusisnessController {
 
     private final SocialNetworkBusisnessService service;
