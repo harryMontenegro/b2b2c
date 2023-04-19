@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TransactionsBusisnessClientServiceImpl implements TransactionsBusisnessClientService {
@@ -69,6 +70,8 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
                 .distinct()
                 .collect(Collectors.toList());
 
+        List<String> allMonth = Stream.of(Month.values()).map(Month::toString).collect(Collectors.toList());
+
         anios.forEach(anio -> {
 
             ResultTransaction itemResponse = new ResultTransaction();
@@ -88,19 +91,23 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
                         .collect(Collectors.toList());
             }
 
-            List<Month> month = monthList
+            List<String> month = monthList
                     .stream()
-                    .map(trans -> trans.getTransactionDate().getMonth())
+                    .map(trans -> trans.getTransactionDate().getMonth().toString())
                     .distinct()
                     .collect(Collectors.toList());
+
+            if (allMonth.stream().anyMatch(single -> month.stream().noneMatch(monthItem -> monthItem.equals(single)))) {
+                month.addAll(allMonth.stream().filter(al -> month.stream().noneMatch(m -> m.equals(al))).collect(Collectors.toList()));
+            }
 
             List<TransactionsBusisnessClientDto> finalMonthList = monthList;
             month.forEach(mo -> {
 
-                if (itemResponse.getData().stream().noneMatch(data -> data.containsKey(mo.toString()))) {
-                    Long count = finalMonthList.stream().filter(ml -> ml.getTransactionDate().getMonth().equals(mo)).count();
+                if (itemResponse.getData().stream().noneMatch(data -> data.containsKey(mo))) {
+                    Long count = finalMonthList.stream().filter(ml -> ml.getTransactionDate().getMonth().toString().equals(mo)).count();
                     Map<String, Long> mapData = new HashMap<>();
-                    mapData.put(mo.toString(), count);
+                    mapData.put(mo, count);
                     itemResponse.getData().add(mapData);
                 }
             });
