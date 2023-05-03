@@ -118,3 +118,23 @@ CREATE TABLE IF NOT EXISTS b2b2c.transactionsbusisnessclient (
 ALTER TABLE b2b2c.address
     ADD COLUMN city VARCHAR(45) NULL;
 
+
+
+
+DROP SEQUENCE if exists b2b2c.modulequalification_seq;
+CREATE SEQUENCE b2b2c.modulequalification_seq;
+DROP TABLE IF EXISTS b2b2c.modulequalification;
+CREATE TABLE IF NOT EXISTS b2b2c.modulequalification (
+    modulequalification_id INT NOT NULL DEFAULT NEXTVAL ('b2b2c.modulequalification_seq'),
+    graphic VARCHAR(50) NOT NULL,
+    busisness_id INT NOT NULL,
+    qualification INT NOT NULL,
+    qualificationDate DATE not NULL,
+    PRIMARY KEY (modulequalification_id),
+    CONSTRAINT "UK_graphic_busisness_id" UNIQUE (graphic, busisness_id),
+    CONSTRAINT fk_modulequalification_busisness
+    FOREIGN KEY (busisness_id)
+    REFERENCES b2b2c.busisness (busisness_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
