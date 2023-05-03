@@ -77,7 +77,7 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
             ResultTransaction itemResponse = new ResultTransaction();
             itemResponse.setYear(anio);
 
-            List<TransactionsBusisnessClientDto> monthList = new ArrayList<>();
+            List<TransactionsBusisnessClientDto> monthList;
             if (gender == null) {
                 monthList = dataSource
                         .stream()
