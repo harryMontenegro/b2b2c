@@ -26,4 +26,13 @@ public class ClientDto {
     public Optional<AddressDto> getAddressOptional() {
         return Optional.ofNullable(address);
     }
+
+    @Override
+    public String toString() {
+        return "ClientDto{" +
+                "name='" + name + '\'' +
+                ", civilStatus=" + civilStatus +
+                ", gender=" + gender +
+                '}';
+    }
 }
