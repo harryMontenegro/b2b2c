@@ -13,5 +13,10 @@ public class TransactionsBusisnessClientDto {
     private Integer client_id;
     private Integer busisness_id;
     private LocalDate transactionDate;
-    private List<ClientDto> client;
+    private ClientDto client;
+
+    @Override
+    public String toString() {
+        return  transactionDate.toString();
+    }
 }

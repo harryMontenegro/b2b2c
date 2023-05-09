@@ -86,7 +86,7 @@ public class TransactionsBusisnessClientServiceImpl implements TransactionsBusis
             } else {
                 monthList = dataSource
                         .stream()
-                        .filter(trans -> trans.getClient().stream().anyMatch(client -> client.getGender().equals(gender)))
+                        .filter(trans -> trans.getClient().getGender().equals(gender))
                         .filter(trans -> String.valueOf(trans.getTransactionDate().getYear()).equals(anio))
                         .collect(Collectors.toList());
             }
