@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class FilterWithRequest extends AGraphWithFilter{
+public class FilterWithRequest extends AGraphWithFilter {
 
     private FilterRequest filterRequest;
 
@@ -22,29 +22,40 @@ public class FilterWithRequest extends AGraphWithFilter{
 
         AtomicReference<List<TransactionsBusisnessClientDto>> reference = new AtomicReference<>(dataSource);
 
-        filterRequest.getOptionalDateFilter().ifPresent(date -> reference.getAndSet(dataSource
-                .stream()
-                .filter(transactions -> transactions.getTransactionDate().isBefore(date.getDateFrom()) &&
-                        transactions.getTransactionDate().isAfter(date.getDateTo())).collect(Collectors.toList())));
-
-        return dataSource
-                .stream()
-                .filter(transactions -> filterRequest.getOptionalGender()
-                        .stream().anyMatch(genderList -> genderList
-                                .stream()
-                                .anyMatch(g -> g.equals(transactions.getClient().getGender()))) &&
-                        filterRequest.getOptionalCivilStatus()
-                                .stream()
-                                .anyMatch(civilStatusList -> civilStatusList
-                                        .stream()
-                                        .anyMatch(civilStatus -> civilStatus.equals(transactions.getClient().getCivilStatus()))) &&
-                        filterRequest.getOptionalCity()
-                                .stream()
-                                .anyMatch(cityList -> cityList
-                                        .stream()
-                                        .anyMatch(city -> city.equals(transactions.getClient().getAddress().getCity()))))
+        filterRequest.getOptionalDateFilter().ifPresent(date -> reference.set(
+                reference.get()
+                        .stream()
+                        .filter(t -> t.getTransactionDate().isAfter(date.getDateFrom()) &&
+                                    t.getTransactionDate().isBefore(date.getDateTo())).collect(Collectors.toList())));
 
 
-                .collect(Collectors.toList());
+        filterRequest.getOptionalGender().ifPresent(genderList -> {
+            reference.set(reference.get()
+                    .stream()
+                    .filter(transactions -> genderList
+                            .stream()
+                            .anyMatch(gender -> transactions.getClient().getGender().equals(gender)))
+                    .collect(Collectors.toList()));
+        });
+
+        filterRequest.getOptionalCivilStatus().ifPresent(civilStatusList -> {
+            reference.set(reference.get()
+                    .stream()
+                    .filter(transactions -> civilStatusList
+                            .stream()
+                            .anyMatch(civilStatus -> transactions.getClient().getCivilStatus().equals(civilStatus)))
+                    .collect(Collectors.toList()));
+        });
+
+        filterRequest.getOptionalCity().ifPresent(cityList -> {
+            reference.set(reference.get()
+                    .stream()
+                    .filter(transactions -> cityList
+                            .stream()
+                            .anyMatch(city -> transactions.getClient().getAddress().getCity().equals(city)))
+                    .collect(Collectors.toList()));
+        });
+
+        return reference.get();
     }
 }

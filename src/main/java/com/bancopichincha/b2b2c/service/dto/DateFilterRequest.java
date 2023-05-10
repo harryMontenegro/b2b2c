@@ -10,4 +10,10 @@ import java.time.LocalDate;
 public class DateFilterRequest {
     private LocalDate dateFrom;
     private LocalDate dateTo;
+
+    @Override
+    public String toString() {
+        return  "dateFrom=" + dateFrom +
+                ", dateTo=" + dateTo;
+    }
 }

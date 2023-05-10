@@ -60,8 +60,8 @@ public class TransactionBusisnessClientController {
 
     @GetMapping({"/busisness/graphic/{busisness_id}", "/busisness/graphic/gender/filter/{gender}/{busisness_id}"})
     public ResponseEntity<?> graphicTransaction(@PathVariable Integer busisness_id, @PathVariable(required = false) Gender gender){
-        return ResponseEntity.status(HttpStatus.OK).body(service.graphTransactions(busisness_id, gender));
-        //return ResponseEntity.status(HttpStatus.OK).body(new FilterGeneralGender(gender, service).getReturnDataGraphic(busisness_id));
+        //return ResponseEntity.status(HttpStatus.OK).body(service.graphTransactions(busisness_id, gender));
+        return ResponseEntity.status(HttpStatus.OK).body(new FilterGeneralGender(gender, service).getReturnDataGraphic(busisness_id));
     }
 
     @PostMapping("/busisness/graphic/{busisness_id}")
