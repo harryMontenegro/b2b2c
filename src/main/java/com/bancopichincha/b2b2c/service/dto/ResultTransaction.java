@@ -14,6 +14,7 @@ public class ResultTransaction {
     private List<Map<String, Long>> data;
 
     public ResultTransaction() {
+        System.out.println("year = " + year);
         this.data = new ArrayList<>();
     }
 }
