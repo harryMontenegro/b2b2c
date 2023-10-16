@@ -15,5 +15,6 @@ public class ResultTransaction {
 
     public ResultTransaction() {
         this.data = new ArrayList<>();
+        System.out.println("year = " + year);
     }
 }

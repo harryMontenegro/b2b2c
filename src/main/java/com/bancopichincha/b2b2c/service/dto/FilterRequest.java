@@ -4,9 +4,7 @@ import com.bancopichincha.b2b2c.domain.enums.CivilStatus;
 import com.bancopichincha.b2b2c.domain.enums.Gender;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.tomcat.jni.Local;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
